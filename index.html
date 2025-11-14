@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JSON → TOON Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="logo">M</div>
+          <div>
+            <p class="brand__name">MCTooner</p>
+            <p class="brand__tagline">JSON Studio</p>
+          </div>
+        </div>
+        <nav class="nav">
+          <p class="nav__label">Panel</p>
+          <button class="nav__item active">
+            <i data-feather="code"></i>
+            <span>Conversor</span>
+          </button>
+          <button class="nav__item" data-future>
+            <i data-feather="layers"></i>
+            <span>Formatos</span>
+          </button>
+          <button class="nav__item" data-future>
+            <i data-feather="database"></i>
+            <span>Colecciones</span>
+          </button>
+          <button class="nav__item" data-future>
+            <i data-feather="zap"></i>
+            <span>Automatizaciones</span>
+          </button>
+        </nav>
+        <div class="upgrade-card">
+          <p class="upgrade-card__title">Proyecto abierto</p>
+          <p class="upgrade-card__text">
+            MCTooner es código abierto, orientado a la comunidad y usable por
+            cualquier persona sin costo.
+          </p>
+          <p class="upgrade-card__foot">¡Compártelo y mejora el flujo LLM!</p>
+        </div>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Laboratorio comunitario</p>
+            <h1>JSON → TOON Experience</h1>
+          </div>
+          <div class="topbar__actions">
+            <label class="search disabled">
+              <i data-feather="search"></i>
+              <input type="search" placeholder="" disabled />
+            </label>
+            <button id="beautyBtn" class="btn ghost">
+              <i data-feather="eye"></i>
+              Ver JSON limpio
+            </button>
+            <button id="sampleBtn" class="btn soft">
+              <i data-feather="shuffle"></i>
+              Ejemplo
+            </button>
+          </div>
+        </header>
+
+        <section class="stat-grid">
+          <article class="stat-card">
+            <div>
+              <p class="stat__label">Nodos analizados</p>
+              <p class="stat__value" data-stat="nodes">0</p>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div>
+              <p class="stat__label">Tablas uniformes</p>
+              <p class="stat__value" data-stat="tables">0</p>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div>
+              <p class="stat__label">Tokens ahorrados</p>
+              <p class="stat__value" data-stat="tokens">0</p>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div>
+              <p class="stat__label">Formateos hoy</p>
+              <p class="stat__value" data-stat="sessions">0</p>
+            </div>
+          </article>
+        </section>
+
+        <section class="workspace">
+          <article class="editor-card">
+            <div class="editor-card__header">
+              <div>
+                <p class="eyebrow">Entrada</p>
+                <h2>JSON estructurado</h2>
+              </div>
+              <div class="editor-card__actions">
+                <button id="convertBtn" class="btn primary">
+                  <i data-feather="play-circle"></i>
+                  Convertir
+                </button>
+              </div>
+            </div>
+            <textarea
+              id="jsonInput"
+              spellcheck="false"
+              placeholder='{\n  "items": [\n    { "sku": "A1", "qty": 2, "price": 9.99 },\n    { "sku": "B2", "qty": 1, "price": 14.5 }\n  ]\n}'
+            ></textarea>
+            <p class="token-meta" id="inputTokens">Tokens estimados: 0</p>
+          </article>
+
+          <article class="editor-card">
+            <div class="editor-card__header">
+              <div>
+                <p class="eyebrow">Salida</p>
+                <h2>TOON optimizado</h2>
+              </div>
+              <div class="editor-card__actions">
+                <button id="copyBtn" class="btn ghost">
+                  <i data-feather="copy"></i>
+                  Copiar
+                </button>
+              </div>
+            </div>
+            <textarea id="toonOutput" spellcheck="false" readonly></textarea>
+            <p class="token-meta" id="outputTokens">Tokens estimados: 0</p>
+          </article>
+
+          <article class="editor-card hidden" id="beautyPanel">
+            <div class="editor-card__header">
+              <div>
+                <p class="eyebrow">Auditoría</p>
+                <h2>JSON formateado</h2>
+              </div>
+              <span class="pill neutral" id="beautyMeta">Oculto</span>
+            </div>
+            <pre id="beautifiedView" aria-live="polite"></pre>
+          </article>
+        </section>
+
+        <section class="dashboard-split">
+          <article class="card chart-card">
+            <div class="card__header">
+              <div>
+                <p class="eyebrow">Historial</p>
+                <h3>Impacto en tokens</h3>
+              </div>
+              <span class="pill success">Tiempo real</span>
+            </div>
+            <div id="tokenChart"></div>
+          </article>
+
+          <article class="card tips-card">
+            <div class="card__header">
+              <div>
+                <p class="eyebrow">Playbook</p>
+                <h3>Buenas prácticas TOON</h3>
+              </div>
+            </div>
+            <ul class="tips">
+              <li>
+                Mantén arrays uniformes para aprovechar encabezados
+                <code>items[n]{...}</code>.
+              </li>
+              <li>
+                Declara el delimitador cuando uses tabs o pipes para maximizar
+                la lectura por modelos.
+              </li>
+              <li>
+                Apóyate en el contador <code>[n]</code> para validar datos
+                generados por LLMs.
+              </li>
+              <li>
+                Documenta tu prompt con ejemplos reales del repositorio
+                <a
+                  href="https://github.com/toon-format/toon"
+                  target="_blank"
+                  rel="noreferrer"
+                  >oficial</a
+                >
+                para mayor precisión.
+              </li>
+            </ul>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"
+      defer
+    ></script>
+    <script src="script.js" defer></script>
+  </body>
+</html>
+
